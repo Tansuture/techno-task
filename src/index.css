@@ -4,7 +4,6 @@
 
 @layer components {
   .inputClass {
-    @apply w-full h-12 text-cyan-600 p-4 rounded-lg	
+    @apply w-full h-12 text-cyan-600 p-4 rounded-2xl	 bg-slate-100;
   }
-
 }
