@@ -1,8 +1,13 @@
 import { InputMask } from "@react-input/mask";
-import { log } from "console";
-import React, { useState } from "react";
-
-const RegistrationForm = () => {
+import React, { useState, FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../../redux/usersSlice";
+import { RootState } from "../../redux/store";
+import { Users } from "../../types/types";
+interface Props {
+  registeredUser: Users;
+}
+const RegistrationForm: FC<Props> = ({ registeredUser }) => {
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -17,7 +22,8 @@ const RegistrationForm = () => {
     password: "",
     isChecked: "",
   });
-  const [isValid, setIsValid] = useState(false);
+  const dispatch = useDispatch();
+  const users: Users[] = useSelector((state: RootState) => state.user);
 
   const handleInputChange = (e: any) => {
     const { name, value, type, checked } = e.target;
@@ -27,7 +33,7 @@ const RegistrationForm = () => {
       [name]: type === "checkbox" ? checked : value,
     });
   };
-  const isFormValid = () => {
+  const handleValidationMessage = () => {
     const { name, phoneNumber, email, password, isChecked } = values;
 
     const newErrors = {
@@ -45,6 +51,7 @@ const RegistrationForm = () => {
 
     setErrors(() => newErrors);
   };
+
   const isEmptyForm = () => {
     return (
       values.name !== "" &&
@@ -56,12 +63,30 @@ const RegistrationForm = () => {
   };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
-    isFormValid();
     e.preventDefault();
+    handleValidationMessage();
+    const user = {
+      name: values.name,
+      phoneNumber: values.phoneNumber,
+      email: values.email,
+      password: values.password,
+    };
+
+    dispatch(addUser(user));
+    const updatedUsers = [...users, user];
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    setValues({
+      name: "",
+      email: "",
+      phoneNumber: "",
+      password: "",
+      isChecked: false,
+    });
   };
+
   return (
-    <div className="w-[400px] h-[400px] flex flex-col text-yellow-300 font-mono justify-center items-center rounded-2xl border-2 shadow-xl border-white-600">
-      <h1 className="text-4xl">Регистрация</h1>
+    <div className="w-[450px] h-[450px] flex flex-col text-yellow-300 font-mono p-5 justify-center items-center rounded-2xl border-2 shadow-xl border-white-600">
+      <h1 className="text-5xl font-display">SIGN UP</h1>
       <form className="w-full p-4 space-y-4">
         <span>
           <input
@@ -97,7 +122,7 @@ const RegistrationForm = () => {
         <span className="text-red-500 text-sm">{errors.email}</span>
         <input
           type="password"
-          placeholder="password"
+          placeholder="пароль"
           value={values.password}
           required
           onChange={handleInputChange}
@@ -107,15 +132,16 @@ const RegistrationForm = () => {
         <span className="text-red-500 text-sm">{errors.password}</span>
       </form>
       <button
-        className={`text-center w-[360px] h-[50px] rounded-full font-semibold ${
+        className={`text-center text-2xl  w-[360px] h-[50px] rounded-full  font-display font-semibold ${
           isEmptyForm()
             ? "bg-slate-200 text-slate-500"
             : "bg-gray-400 text-gray-600 cursor-not-allowed"
         }`}
         type="submit"
+        disabled={!isEmptyForm()}
         onClick={handleSubmit}
       >
-        Зарегистрироваться
+        Sign up
       </button>
       <span className="self-start">
         <input

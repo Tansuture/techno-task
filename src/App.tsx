@@ -1,14 +1,13 @@
 import React from "react";
 import "./App.css";
-import RegistrationForm from "./components/RegistrationForm/RegistrationForm";
-import PasswordRecoveryForm from "./components/PasswordRecoveryForm/PasswordRecoveryForm";
+import Authorization from "./components/Authorization/Authorization";
+
 
 function App() {
+
+
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-r from-cyan-500 to-blue-500 ">
-      <RegistrationForm />
-      {/* <PasswordRecoveryForm /> */}
-    </div>
+    <><Authorization/></>
   );
 }
 
