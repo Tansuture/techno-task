@@ -11,7 +11,7 @@ const Authorization = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isVisible, setIsVisible] = useState(true);
   const [isPasswordForgot, setPasswordForgot] = useState(false);
-
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const users = useSelector((state: RootState) => state.user);
   const registeredUser = users.find(
     (el: Users) => el.phoneNumber === phoneNumber
@@ -21,15 +21,15 @@ const Authorization = () => {
       <div className="flex justify-center items-center h-screen bg-violet-500">
         {isPasswordForgot ? (
           <div className="animate-fade-in">
-            <PasswordRecoveryForm /> 
+            <PasswordRecoveryForm />
           </div>
-        ) : isVisible ? (
+        ) : isVisible || isSubmitted ? (
           <div className="animate-fade-out">
             <SignInForm
               data={{
                 registeredUser,
                 phoneNumber,
-                setPasswordForgot, 
+                setPasswordForgot,
                 setPhoneNumber,
                 setIsVisible,
               }}
@@ -37,7 +37,7 @@ const Authorization = () => {
           </div>
         ) : (
           <div className="animate-fade-in">
-            <RegistrationForm registeredUser={registeredUser} />
+            <RegistrationForm setIsSubmitted={setIsSubmitted} />
           </div>
         )}
       </div>

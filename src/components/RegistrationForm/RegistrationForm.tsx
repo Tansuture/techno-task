@@ -5,9 +5,9 @@ import { addUser } from "../../redux/usersSlice";
 import { RootState } from "../../redux/store";
 import { Users } from "../../types/types";
 interface Props {
-  registeredUser: Users;
+  setIsSubmitted: (value: boolean) => void;
 }
-const RegistrationForm: FC<Props> = ({ registeredUser }) => {
+const RegistrationForm: FC<Props> = ({ setIsSubmitted }) => {
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -32,6 +32,7 @@ const RegistrationForm: FC<Props> = ({ registeredUser }) => {
       ...values,
       [name]: type === "checkbox" ? checked : value,
     });
+    handleValidationMessage();
   };
   const handleValidationMessage = () => {
     const { name, phoneNumber, email, password, isChecked } = values;
@@ -64,7 +65,6 @@ const RegistrationForm: FC<Props> = ({ registeredUser }) => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    handleValidationMessage();
     const user = {
       name: values.name,
       phoneNumber: values.phoneNumber,
@@ -82,6 +82,7 @@ const RegistrationForm: FC<Props> = ({ registeredUser }) => {
       password: "",
       isChecked: false,
     });
+    setIsSubmitted(true);
   };
 
   return (
@@ -98,7 +99,7 @@ const RegistrationForm: FC<Props> = ({ registeredUser }) => {
             required
             name="name"
           />
-          <span className="text-red-500 text-sm">{errors.name}</span>
+          <span className="text-500 text-sm">{errors.name}</span>
         </span>
         <InputMask
           mask="+7(___) ___-__-__"
@@ -109,7 +110,7 @@ const RegistrationForm: FC<Props> = ({ registeredUser }) => {
           placeholder="+7(xxx)(xxx)(xx)(xx)"
           name="phoneNumber"
         />
-        <span className="text-red-500 text-sm">{errors.phoneNumber}</span>
+        <span className="text-500 text-sm">{errors.phoneNumber}</span>
         <input
           type="email"
           placeholder="email"
@@ -119,7 +120,7 @@ const RegistrationForm: FC<Props> = ({ registeredUser }) => {
           required
           name="email"
         />
-        <span className="text-red-500 text-sm">{errors.email}</span>
+        <span className="text-500 text-sm">{errors.email}</span>
         <input
           type="password"
           placeholder="пароль"
@@ -129,7 +130,7 @@ const RegistrationForm: FC<Props> = ({ registeredUser }) => {
           className="inputClass"
           name="password"
         />
-        <span className="text-red-500 text-sm">{errors.password}</span>
+        <span className="text-500 text-sm">{errors.password}</span>
       </form>
       <button
         className={`text-center text-2xl  w-[360px] h-[50px] rounded-full  font-display font-semibold ${
