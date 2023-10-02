@@ -17,7 +17,6 @@ const RegistrationForm: FC<Props> = ({ setIsSubmitted }) => {
   });
   const [errors, setErrors] = useState({
     name: "",
-    phoneNumber: "",
     email: "",
     password: "",
     isChecked: "",
@@ -39,15 +38,13 @@ const RegistrationForm: FC<Props> = ({ setIsSubmitted }) => {
 
     const newErrors = {
       name: name.trim() === "" ? "Имя обязательно" : "",
-      phoneNumber: !/^\+7\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/.test(phoneNumber)
-        ? "Неправильный формат номера"
-        : "",
+
       email: !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)
         ? "Неправильный формат email"
         : "",
       password:
         password.length < 8 ? "Пароль должен содержать минимум 8 символов" : "",
-      isChecked: !isChecked ? "Вы должны согласиться" : "",
+      isChecked: !isChecked ? "" : ".Вы должны согласиться",
     };
 
     setErrors(() => newErrors);
@@ -86,7 +83,7 @@ const RegistrationForm: FC<Props> = ({ setIsSubmitted }) => {
   };
 
   return (
-    <div className="w-[450px] h-[450px] flex flex-col text-yellow-300 font-mono p-5 justify-center items-center rounded-2xl border-2 shadow-xl border-white-600">
+    <div className="w-[450px] h-[480px] flex flex-col text-yellow-300 font-mono p-5 justify-center items-center rounded-2xl border-2 shadow-xl border-white-600">
       <h1 className="text-5xl font-display">SIGN UP</h1>
       <form className="w-full p-4 space-y-4">
         <span>
@@ -110,7 +107,6 @@ const RegistrationForm: FC<Props> = ({ setIsSubmitted }) => {
           placeholder="+7(xxx)(xxx)(xx)(xx)"
           name="phoneNumber"
         />
-        <span className="text-500 text-sm">{errors.phoneNumber}</span>
         <input
           type="email"
           placeholder="email"
@@ -152,7 +148,7 @@ const RegistrationForm: FC<Props> = ({ setIsSubmitted }) => {
           name="isChecked"
         />
         <label htmlFor="checkbox"> ok</label>
-        <span className="text-red-500 text-sm">{errors.isChecked}</span>
+        <span className="text-500 text-sm">{errors.isChecked}</span>
       </span>
     </div>
   );
